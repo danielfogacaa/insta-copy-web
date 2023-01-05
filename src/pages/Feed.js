@@ -28,7 +28,7 @@ function Feed() {
     <section id="post-list">
       {posts.length &&
         posts.map((post) => (
-          <article>
+          <article key={post._id}>
             <header>
               <div className="user-info">
                 <span>{post.author}</span>

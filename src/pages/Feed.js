@@ -22,8 +22,6 @@ function Feed() {
     getResponse();
   }, []);
 
-  console.log("p", posts);
-
   return (
     <section id="post-list">
       {posts.length &&

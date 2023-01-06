@@ -1,64 +1,81 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./New.css";
 
-class New extends Component {
-  state = {
+function New() {
+  const [state, setState] = useState({
     image: null,
     author: "",
     place: "",
     description: "",
     hashtags: ""
+  });
+  const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    setState((oldState) => ({
+      ...oldState,
+      image: e.target.files[0]
+    }));
   };
 
-  handleImageChange = (e) => {
-    this.setState({ image: e.target.files[0] });
+  const handleChange = (e) => {
+    setState((oldState) => ({
+      ...oldState,
+      [e.target.name]: e.target.value
+    }));
   };
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(this.state);
+    const data = new FormData();
+
+    data.append("image", state.image);
+    data.append("author", state.author);
+    data.append("place", state.place);
+    data.append("description", state.description);
+    data.append("hashtags", state.hashtags);
+
+    await api.post("posts", data);
+
+    navigate("/");
   };
 
-  render() {
-    return (
-      <form id="new-post" onSubmit={this.handleSubmit}>
-        <input type="file" onChange={this.handleImageChange} />
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.author}
-          name="author"
-          placeholder="Autor do post"
-        />
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.place}
-          name="place"
-          placeholder="Local do post"
-        />
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.description}
-          name="description"
-          placeholder="Descrição do post"
-        />
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.hashtags}
-          name="hashtags"
-          placeholder="Hashtags do post"
-        />
-        <button type="submit">Enviar</button>
-      </form>
-    );
-  }
+  return (
+    <form id="new-post" onSubmit={handleSubmit}>
+      <input type="file" onChange={handleImageChange} />
+      <input
+        type="text"
+        onChange={handleChange}
+        value={state.author}
+        name="author"
+        placeholder="Autor do post"
+      />
+      <input
+        type="text"
+        onChange={handleChange}
+        value={state.place}
+        name="place"
+        placeholder="Local do post"
+      />
+      <input
+        type="text"
+        onChange={handleChange}
+        value={state.description}
+        name="description"
+        placeholder="Descrição do post"
+      />
+      <input
+        type="text"
+        onChange={handleChange}
+        value={state.hashtags}
+        name="hashtags"
+        placeholder="Hashtags do post"
+      />
+      <button type="submit">Enviar</button>
+    </form>
+  );
 }
 
 export default New;

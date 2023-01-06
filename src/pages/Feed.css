@@ -47,6 +47,7 @@ section#post-list article footer .actions{
 
 section#post-list article footer .actions button{
 	background: transparent;
+	cursor: pointer;
 }
 
 section#post-list article footer .actions img{

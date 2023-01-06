@@ -18,6 +18,10 @@ function Feed() {
     return data;
   };
 
+  const handleLike = async (id) => {
+    api.post(`/posts/${id}/like`);
+  };
+
   useEffect(() => {
     getResponse();
   }, []);
@@ -37,7 +41,9 @@ function Feed() {
             <img src={`http://localhost:3333/files/${post.image}`} alt="Mais" />
             <footer>
               <div className="actions">
-                <img src={like} alt="Like" />
+                <button type="button" onClick={() => handleLike(post._id)}>
+                  <img src={like} alt="Like" />
+                </button>
                 <img src={comment} alt="Comentar" />
                 <img src={send} alt="Enviar" />
               </div>
